@@ -1,0 +1,74 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <script src="js/jquery.js"></script>
+    <style type="text/css">
+        @font-face {
+         font-family: 'fontNameRegular';
+         src: local('fangzheng Regular'), 
+                      local('fangzheng'), 
+                      url('./font/fangzheng.ttf') format('truetype');
+        } 
+        .phrase,canvas{font-family:'fontNameRegular'; }
+        /*.phrase{display: none;}*/
+    </style>
+</head>
+<body>
+
+    <div style="display:none">
+        <img id="starImg" style="height:100%; width:100%;" src="img/background_read.png" />
+    </div>
+    <canvas id="main" height="300" width="580" style="border:1px solid #d3d3d3;"></canvas>
+    <input type="text" id="desc" onblur="hechen()" value="" />
+    <button onclick="saveImageInfo()">确认生成守</button>
+    <div class="phrase">守住待兔</div>
+
+<script>
+    $(function(){
+        hechen();
+    });
+
+    function hechen(){
+        var mainCtx = getCanvasContext('main');
+        var maxWidth = mainCtx.width;
+        var maxHeight = mainCtx.height;
+        mainCtx.clearRect(0,0,600,600);
+        var starImg = new Image();
+        starImg.src=$('#starImg').attr('src');
+        starImg.onload=function(){
+            mainCtx.drawImage(starImg,0,0,580,300);
+            if($('#desc').val()){
+                mainCtx.fillStyle = "black";
+                mainCtx.font="85px fontNameRegular";
+                mainCtx.fillText($('#desc').val().charAt(0),35,210);
+                mainCtx.fillText($('#desc').val().charAt(1),178,210);
+                mainCtx.fillText($('#desc').val().charAt(2),322,210);
+                mainCtx.fillText($('#desc').val().charAt(3),465,210);
+            }
+
+        };
+
+    }
+
+    function getCanvasContext(id){
+        return document.getElementById(id).getContext("2d");
+    }
+
+    function saveImageInfo() {
+        var mycanvas = document.getElementById("main");
+        var image = mycanvas.toDataURL("image/jpg");
+        var w=window.open('about:blank','image from canvas');
+        // w.document.write("<img src='"+image+"' alt='from canvas'/>");
+        $('body').append("<img src='"+image+"'/>");
+    }
+
+    function saveAsLocalImage(){
+        var myCanvas = document.getElementById("main");
+        var image = myCanvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream");
+        window.location.href=image;
+    }
+
+</script>
+
+</body>
+</html>
